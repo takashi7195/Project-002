@@ -45,8 +45,8 @@ select { padding: 10px; font-size: 18px; width: 100%; }
 }
 
 @keyframes spin {
-  0% { transform: translateY(-1200px); }
-  100% { transform: translateY(-600px); }
+  0% { transform: translateY(-600px); }
+  100% { transform: translateY(-1200px); }
 }
 
 .spinning .reel {
@@ -59,8 +59,8 @@ select { padding: 10px; font-size: 18px; width: 100%; }
   .slot { width: 80px; height: 80px; font-size: 36px; }
   .item { height: 80px; }
   @keyframes spin {
-    0% { transform: translateY(-960px); }
-    100% { transform: translateY(-480px); }
+    0% { transform: translateY(-480px); }
+    100% { transform: translateY(-960px); }
   }
 }
 .bg-1 { background-color: #FFFFFF; color: #000000; }

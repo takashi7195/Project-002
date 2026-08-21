@@ -156,15 +156,28 @@ function startRoulette(slot) {
 async function stopRoulette(slot, finalBoat, delay) {
   return new Promise(resolve => {
     setTimeout(() => {
-      slot.classList.remove('spinning');
       const reel = slot.querySelector('.reel');
+      // 現在のtransform値を取得
+      const style = window.getComputedStyle(reel);
+      const matrix = new WebKitCSSMatrix(style.transform);
+      const currentY = matrix.m42;
+
+      slot.classList.remove('spinning');
       const itemHeight = slot.querySelector('.item').offsetHeight;
       
-      // 2セット目の中央位置(-600px)を基準として、目的の数字の位置へ移動
-      const offset = -600 - ((finalBoat - 1) * itemHeight);
-      reel.style.transform = `translateY(${offset}px)`;
+      // 目標位置（0～5セット目）
+      let targetY = -(finalBoat - 1) * itemHeight;
       
-      // 停止後に確定したクラスを付与
+      // 下方向にスクロールしているため、currentYより小さい値にする
+      while (targetY >= currentY) {
+          targetY -= 6 * itemHeight;
+      }
+      // あまり遠くに行かないよう調整
+      while (currentY - targetY > 6 * itemHeight) {
+          targetY += 6 * itemHeight;
+      }
+
+      reel.style.transform = `translateY(${targetY}px)`;
       slot.className = `slot bg-${finalBoat}`;
       resolve();
     }, delay);
