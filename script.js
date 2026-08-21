@@ -152,34 +152,41 @@ startBtn.addEventListener('click', async () => {
 function startRoulette(slot) {
   // CSSアニメーションに変更したため、JavaScriptでのinterval制御は不要
 }
-
 async function stopRoulette(slot, finalBoat, delay) {
   return new Promise(resolve => {
     setTimeout(() => {
       const reel = slot.querySelector('.reel');
-      // 現在のtransform値を取得
+
+      // 1. 回転を停止し、現在の位置を固定
       const style = window.getComputedStyle(reel);
       const matrix = new WebKitCSSMatrix(style.transform);
       const currentY = matrix.m42;
 
       slot.classList.remove('spinning');
+      reel.style.transform = `translateY(${currentY}px)`;
+
+      // 2. 目標位置を計算 (現在の位置より「先」にある目的数字)
       const itemHeight = slot.querySelector('.item').offsetHeight;
-      
-      // 目標位置（0～5セット目）
       let targetY = -(finalBoat - 1) * itemHeight;
-      
-      // 下方向にスクロールしているため、currentYより小さい値にする
-      while (targetY >= currentY) {
-          targetY -= 6 * itemHeight;
-      }
-      // あまり遠くに行かないよう調整
-      while (currentY - targetY > 6 * itemHeight) {
+
+      // 上→下へ回転しているのでtargetYはcurrentYより大きい値にする
+      while (targetY <= currentY) {
           targetY += 6 * itemHeight;
       }
+      // スクロール速度が速すぎないように、直近のターゲットを選択
+      while (targetY - currentY > 6 * itemHeight) {
+          targetY -= 6 * itemHeight;
+      }
 
-      reel.style.transform = `translateY(${targetY}px)`;
-      slot.className = `slot bg-${finalBoat}`;
-      resolve();
+      // 3. アニメーション実行 (transitionで自然に減速して停止)
+      requestAnimationFrame(() => {
+        reel.style.transition = 'transform 1.5s cubic-bezier(0.2, 0.8, 0.3, 1)';
+        reel.style.transform = `translateY(${targetY}px)`;
+        // 停止後に確定したクラスを付与
+        slot.className = `slot bg-${finalBoat}`;
+      });
+
+      setTimeout(resolve, 1500); // transition完了まで待つ
     }, delay);
   });
 }
