@@ -136,14 +136,15 @@ startBtn.addEventListener('click', async () => {
             reel.appendChild(item);
         }
     }
+    reel.style.transform = 'translateY(-600px)'; // 初期位置を中央セットに
     slot.classList.add('spinning');
   });
 
   // 順番に停止：右(3着) -> 中央(2着) -> 左(1着)
   // STARTからの停止時間: 3秒, 9秒, 18秒
-  await stopRoulette(slots[2], result[2], 3000); // 3着停止 (右/slot-3)
-  await stopRoulette(slots[1], result[1], 9000); // 2着停止 (中央/slot-2)
-  await stopRoulette(slots[0], result[0], 18000); // 1着停止 (左/slot-1)
+  await stopRoulette(slots[0], result[2], 3000);  // 右(slot-3)に3着
+  await stopRoulette(slots[1], result[1], 6000);  // 中央(slot-2)に2着 (3000+6000=9000ms)
+  await stopRoulette(slots[2], result[0], 9000);  // 左(slot-1)に1着 (9000+9000=18000ms)
   
   startBtn.disabled = false;
 });
@@ -157,10 +158,11 @@ async function stopRoulette(slot, finalBoat, delay) {
     setTimeout(() => {
       slot.classList.remove('spinning');
       const reel = slot.querySelector('.reel');
-      const itemHeight = slot.offsetHeight;
+      const itemHeight = slot.querySelector('.item').offsetHeight;
       
-      // 最終艇番の位置まで移動
-      reel.style.transform = `translateY(-${(finalBoat - 1) * itemHeight}px)`;
+      // 2セット目の中央位置(-600px)を基準として、目的の数字の位置へ移動
+      const offset = -600 - ((finalBoat - 1) * itemHeight);
+      reel.style.transform = `translateY(${offset}px)`;
       
       // 停止後に確定したクラスを付与
       slot.className = `slot bg-${finalBoat}`;

@@ -25,9 +25,11 @@ select { padding: 10px; font-size: 18px; width: 100%; }
 #results { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
 .slot { 
   width: 100px; height: 100px; 
+  display: flex; justify-content: center; align-items: center; 
   font-size: 48px; font-weight: bold; border-radius: 12px; border: 3px solid #333; flex-shrink: 0;
   overflow: hidden;
   position: relative;
+  box-sizing: border-box;
 }
 
 .reel {
@@ -43,12 +45,12 @@ select { padding: 10px; font-size: 18px; width: 100%; }
 }
 
 @keyframes spin {
-  0% { transform: translateY(0); }
+  0% { transform: translateY(-1200px); }
   100% { transform: translateY(-600px); }
 }
 
 .spinning .reel {
-  animation: spin 0.1s linear infinite;
+  animation: spin 1s linear infinite;
   transition: none;
 }
 
@@ -57,11 +59,10 @@ select { padding: 10px; font-size: 18px; width: 100%; }
   .slot { width: 80px; height: 80px; font-size: 36px; }
   .item { height: 80px; }
   @keyframes spin {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-480px); } /* 6アイテム分(80px*6=480px) */
+    0% { transform: translateY(-960px); }
+    100% { transform: translateY(-480px); }
   }
 }
-
 .bg-1 { background-color: #FFFFFF; color: #000000; }
 .bg-2 { background-color: #000000; color: #FFFFFF; }
 .bg-3 { background-color: #FF0000; color: #FFFFFF; }
