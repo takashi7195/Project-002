@@ -130,12 +130,17 @@ startBtn.addEventListener('click', async () => {
     startRoulette(slots[2])
   ];
 
-  // 順番に停止
-  await stopRoulette(slots[0], result[2]); // 3着停止 (slot-3/右)
+  // 順番に停止：右(3着) -> 中央(2着) -> 左(1着)
+  // slots[0] = slot-3 (右/3着)
+  // slots[1] = slot-2 (中央/2着)
+  // slots[2] = slot-1 (左/1着)
+  // result = [1着, 2着, 3着]
+
+  await stopRoulette(slots[0], result[2]); // 3着停止 (右/slot-3)
   await new Promise(r => setTimeout(r, 500));
-  await stopRoulette(slots[1], result[1]); // 2着停止 (slot-2/中央)
+  await stopRoulette(slots[1], result[1]); // 2着停止 (中央/slot-2)
   await new Promise(r => setTimeout(r, 500));
-  await stopRoulette(slots[2], result[0]); // 1着停止 (slot-1/左)
+  await stopRoulette(slots[2], result[0]); // 1着停止 (左/slot-1)
 
   startBtn.disabled = false;
 });
