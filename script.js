@@ -119,38 +119,47 @@ startBtn.addEventListener('click', async () => {
   const stadium = stadiumSelect.value;
   const dist = calculateDistribution(stadium);
   const result = selectCombination(dist);
-  // 演出Orderは [3着, 2着, 1着] の結果艇番
-  const 演出Order = [result[2], result[1], result[0]];
 
-  await Promise.all([
-    runRoulette(slots[0], 演出Order[0]),
-    runRoulette(slots[1], 演出Order[1]),
-    runRoulette(slots[2], 演出Order[2])
-  ]);
+  // result[0]=1着(slot-1), result[1]=2着(slot-2), result[2]=3着(slot-3)
+  // 演出順: 3着(slot-3) -> 2着(slot-2) -> 1着(slot-1)
+
+  // 全て回転開始
+  const runners = [
+    startRoulette(slots[0]),
+    startRoulette(slots[1]),
+    startRoulette(slots[2])
+  ];
+
+  // 順番に停止
+  await stopRoulette(slots[2], result[2]); // 3着停止
+  await new Promise(r => setTimeout(r, 500));
+  await stopRoulette(slots[1], result[1]); // 2着停止
+  await new Promise(r => setTimeout(r, 500));
+  await stopRoulette(slots[0], result[0]); // 1着停止
 
   startBtn.disabled = false;
-  });
+});
 
-  async function runRoulette(slot, finalBoat) {
+function startRoulette(slot) {
+  const interval = setInterval(() => {
+    const boat = Math.floor(Math.random() * 6) + 1;
+    slot.textContent = boat;
+    slot.className = `slot bg-${boat}`;
+  }, 100);
+  slot.dataset.interval = interval;
+}
+
+async function stopRoulette(slot, finalBoat) {
   return new Promise(resolve => {
-    let count = 0;
-    // 停止までの回転数を個別にランダム化して、同時に止まらないようにする
-    const maxCount = 20 + Math.floor(Math.random() * 10);
-
-    const interval = setInterval(() => {
-      const boat = Math.floor(Math.random() * 6) + 1;
-      slot.textContent = boat;
-      slot.className = `slot bg-${boat}`;
-      count++;
-      if (count > maxCount) {
-        clearInterval(interval);
-        slot.textContent = finalBoat;
-        slot.className = `slot bg-${finalBoat}`;
-        resolve();
-      }
-    }, 100);
+    // 演出として少し回すためにタイマーを遅らせる
+    setTimeout(() => {
+      clearInterval(slot.dataset.interval);
+      slot.textContent = finalBoat;
+      slot.className = `slot bg-${finalBoat}`;
+      resolve();
+    }, 500);
   });
-  }
+}
 
 function runValidation(stadium, iterations) {
   const dist = calculateDistribution(stadium);
