@@ -131,17 +131,11 @@ startBtn.addEventListener('click', async () => {
   ];
 
   // 順番に停止：右(3着) -> 中央(2着) -> 左(1着)
-  // slots[0] = slot-3 (右/3着)
-  // slots[1] = slot-2 (中央/2着)
-  // slots[2] = slot-1 (左/1着)
-  // result = [1着, 2着, 3着]
-
-  await stopRoulette(slots[0], result[2]); // 3着停止 (右/slot-3)
-  await new Promise(r => setTimeout(r, 500));
-  await stopRoulette(slots[1], result[1]); // 2着停止 (中央/slot-2)
-  await new Promise(r => setTimeout(r, 500));
-  await stopRoulette(slots[2], result[0]); // 1着停止 (左/slot-1)
-
+  // 停止までの待ち時間: 3秒, 6秒, 9秒
+  await stopRoulette(slots[0], result[2], 3000); // 3着停止 (右/slot-3)
+  await stopRoulette(slots[1], result[1], 6000); // 2着停止 (中央/slot-2)
+  await stopRoulette(slots[2], result[0], 9000); // 1着停止 (左/slot-1)
+  
   startBtn.disabled = false;
 });
 
@@ -154,15 +148,14 @@ function startRoulette(slot) {
   slot.dataset.interval = interval;
 }
 
-async function stopRoulette(slot, finalBoat) {
+async function stopRoulette(slot, finalBoat, delay) {
   return new Promise(resolve => {
-    // 演出として少し回すためにタイマーを遅らせる
     setTimeout(() => {
       clearInterval(slot.dataset.interval);
       slot.textContent = finalBoat;
       slot.className = `slot bg-${finalBoat}`;
       resolve();
-    }, 500);
+    }, delay);
   });
 }
 
