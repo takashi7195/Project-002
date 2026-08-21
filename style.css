@@ -19,7 +19,8 @@ body {
   padding: 20px;
   border-radius: 12px;
 }
-select { padding: 10px; font-size: 18px; margin-bottom: 20px; width: 100%; }
+.selectors { display: flex; gap: 10px; margin-bottom: 20px; }
+select { padding: 10px; font-size: 18px; width: 100%; }
 #results { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
 .slot { 
   width: 100px; height: 100px; 
