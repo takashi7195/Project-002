@@ -1,0 +1,11 @@
+body { font-family: sans-serif; text-align: center; padding: 20px; }
+.container { max-width: 500px; margin: auto; }
+.boat { display: inline-block; padding: 10px 20px; margin: 5px; border-radius: 5px; font-weight: bold; border: 1px solid #ccc; }
+.boat-1 { background-color: #ffffff; color: #000; }
+.boat-2 { background-color: #000000; color: #fff; }
+.boat-3 { background-color: #ff0000; color: #fff; }
+.boat-4 { background-color: #0000ff; color: #fff; }
+.boat-5 { background-color: #ffff00; color: #000; }
+.boat-6 { background-color: #008000; color: #fff; }
+.controls { margin: 20px 0; }
+button { padding: 10px 20px; font-size: 16px; margin: 0 5px; cursor: pointer; }
