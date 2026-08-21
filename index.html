@@ -3,20 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>今日の3連単予想</title>
+    <title>AI3連単</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>今日の3連単予想</h1>
-        <div id="forecast-area">
-            <p>予想ボタンを押してください</p>
+        <select id="stadium-select">
+            <option value="桐生">桐生</option>
+            <option value="戸田">戸田</option>
+            <option value="江戸川">江戸川</option>
+            <option value="平和島">平和島</option>
+            <option value="多摩川">多摩川</option>
+            <option value="浜名湖">浜名湖</option>
+            <option value="蒲郡">蒲郡</option>
+            <option value="常滑">常滑</option>
+            <option value="津">津</option>
+            <option value="三国">三国</option>
+            <option value="びわこ">びわこ</option>
+            <option value="住之江">住之江</option>
+            <option value="尼崎">尼崎</option>
+            <option value="鳴門">鳴門</option>
+            <option value="丸亀">丸亀</option>
+            <option value="児島">児島</option>
+            <option value="宮島">宮島</option>
+            <option value="徳山">徳山</option>
+            <option value="下関">下関</option>
+            <option value="若松">若松</option>
+            <option value="芦屋">芦屋</option>
+            <option value="福岡">福岡</option>
+            <option value="唐津">唐津</option>
+            <option value="大村">大村</option>
+        </select>
+
+        <div id="results">
+            <div class="slot" id="slot-1">?</div>
+            <div class="slot" id="slot-2">?</div>
+            <div class="slot" id="slot-3">?</div>
         </div>
-        <div class="controls">
-            <button id="predict-btn">3連単を予想する</button>
-            <button id="reset-btn">リセット</button>
-        </div>
-        <p>予想回数: <span id="count">0</span></p>
+
+        <button id="start-btn">START</button>
     </div>
     <script src="script.js"></script>
 </body>
