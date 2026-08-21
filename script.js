@@ -124,35 +124,45 @@ startBtn.addEventListener('click', async () => {
   // 演出順: 3着(slot-3) -> 2着(slot-2) -> 1着(slot-1)
 
   // 全て回転開始
-  const runners = [
-    startRoulette(slots[0]),
-    startRoulette(slots[1]),
-    startRoulette(slots[2])
-  ];
+  slots.forEach(slot => {
+    const reel = slot.querySelector('.reel');
+    reel.innerHTML = '';
+    // 3セット分数字を生成して無限スクロールに対応
+    for (let i = 0; i < 3; i++) {
+        for (let b = 1; b <= 6; b++) {
+            const item = document.createElement('div');
+            item.className = `item bg-${b}`;
+            item.textContent = b;
+            reel.appendChild(item);
+        }
+    }
+    slot.classList.add('spinning');
+  });
 
   // 順番に停止：右(3着) -> 中央(2着) -> 左(1着)
-  // 停止までの待ち時間: 3秒, 6秒, 9秒
-  await stopRoulette(slots[0], result[2], 3000); // 3着停止 (右/slot-3)
-  await stopRoulette(slots[1], result[1], 6000); // 2着停止 (中央/slot-2)
-  await stopRoulette(slots[2], result[0], 9000); // 1着停止 (左/slot-1)
+  // STARTからの停止時間: 3秒, 9秒, 18秒
+  await stopRoulette(slots[2], result[2], 3000); // 3着停止 (右/slot-3)
+  await stopRoulette(slots[1], result[1], 9000); // 2着停止 (中央/slot-2)
+  await stopRoulette(slots[0], result[0], 18000); // 1着停止 (左/slot-1)
   
   startBtn.disabled = false;
 });
 
 function startRoulette(slot) {
-  const interval = setInterval(() => {
-    const boat = Math.floor(Math.random() * 6) + 1;
-    slot.textContent = boat;
-    slot.className = `slot bg-${boat}`;
-  }, 100);
-  slot.dataset.interval = interval;
+  // CSSアニメーションに変更したため、JavaScriptでのinterval制御は不要
 }
 
 async function stopRoulette(slot, finalBoat, delay) {
   return new Promise(resolve => {
     setTimeout(() => {
-      clearInterval(slot.dataset.interval);
-      slot.textContent = finalBoat;
+      slot.classList.remove('spinning');
+      const reel = slot.querySelector('.reel');
+      const itemHeight = slot.offsetHeight;
+      
+      // 最終艇番の位置まで移動
+      reel.style.transform = `translateY(-${(finalBoat - 1) * itemHeight}px)`;
+      
+      // 停止後に確定したクラスを付与
       slot.className = `slot bg-${finalBoat}`;
       resolve();
     }, delay);

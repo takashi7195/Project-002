@@ -19,17 +19,47 @@ body {
   padding: 20px;
   border-radius: 12px;
 }
+h1 { margin-top: 0; margin-bottom: 20px; font-size: 28px; color: #333; text-align: center; }
 .selectors { display: flex; gap: 10px; margin-bottom: 20px; }
 select { padding: 10px; font-size: 18px; width: 100%; }
 #results { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
 .slot { 
   width: 100px; height: 100px; 
-  display: flex; justify-content: center; align-items: center; 
-  font-size: 48px; font-weight: bold; border-radius: 12px; border: 3px solid #333; flex-shrink: 0; 
+  font-size: 48px; font-weight: bold; border-radius: 12px; border: 3px solid #333; flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.reel {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  transition: transform 0.5s ease-out;
+}
+
+.item {
+  width: 100%; height: 100px;
+  display: flex; justify-content: center; align-items: center;
+}
+
+@keyframes spin {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-600px); }
+}
+
+.spinning .reel {
+  animation: spin 0.1s linear infinite;
+  transition: none;
 }
 
 @media (max-width: 400px) {
+  h1 { font-size: 22px; }
   .slot { width: 80px; height: 80px; font-size: 36px; }
+  .item { height: 80px; }
+  @keyframes spin {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-480px); } /* 6アイテム分(80px*6=480px) */
+  }
 }
 
 .bg-1 { background-color: #FFFFFF; color: #000000; }
