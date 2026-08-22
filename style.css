@@ -6,7 +6,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   padding-top: 10vh;
-  background-image: url('Copilot_20260821_224628.png');
+  background-image: url('boat_001.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -15,7 +15,7 @@ body {
 .container {
   max-width: 600px;
   width: 100%;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: rgba(255, 255, 255, 0.88);
   padding: 20px;
   border-radius: 12px;
 }
