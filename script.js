@@ -114,6 +114,32 @@ function selectCombination(dist) {
   return dist[dist.length - 1].comb;
 }
 
+// 共通化：リール生成処理
+function populateReel(reel) {
+  reel.innerHTML = '';
+  for (let i = 0; i < 3; i++) {
+    for (let b = 1; b <= 6; b++) {
+      const item = document.createElement('div');
+      item.className = `item bg-${b}`;
+      item.textContent = b;
+      reel.appendChild(item);
+    }
+  }
+}
+
+// 初期表示処理
+document.addEventListener('DOMContentLoaded', () => {
+  slots.forEach((slot, index) => {
+    const reel = slot.querySelector('.reel');
+    populateReel(reel);
+    // 初期表示: slot-1->1, slot-2->2, slot-3->3
+    // slots = [slot-3, slot-2, slot-1]
+    // index 0(slot-3) -> 3, index 1(slot-2) -> 2, index 2(slot-1) -> 1
+    const offset = 2 - index; // 3->2, 2->1, 1->0
+    reel.style.transform = `translateY(calc(var(--item-height) * -${12 + offset}))`;
+  });
+});
+
 startBtn.addEventListener('click', async () => {
   startBtn.disabled = true;
   const stadium = stadiumSelect.value;
@@ -124,18 +150,11 @@ startBtn.addEventListener('click', async () => {
   // 演出順: 3着(slot-3) -> 2着(slot-2) -> 1着(slot-1)
 
   // 全て回転開始
-  slots.forEach(slot => {
+  slots.forEach((slot, index) => {
     const reel = slot.querySelector('.reel');
-    reel.innerHTML = '';
-    // 3セット分数字を生成して無限スクロールに対応
-    for (let i = 0; i < 3; i++) {
-        for (let b = 1; b <= 6; b++) {
-            const item = document.createElement('div');
-            item.className = `item bg-${b}`;
-            item.textContent = b;
-            reel.appendChild(item);
-        }
-    }
+    populateReel(reel);
+    // 回転開始時の位相をずらす (0ms, 150ms, 300ms)
+    reel.style.animationDelay = `${index * 150}ms`;
     slot.classList.add('spinning');
   });
 
