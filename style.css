@@ -30,6 +30,7 @@ select { padding: 10px; font-size: 18px; width: 100%; }
   overflow: hidden;
   position: relative;
   box-sizing: border-box;
+  --item-height: 100px;
 }
 
 .reel {
@@ -37,6 +38,7 @@ select { padding: 10px; font-size: 18px; width: 100%; }
   top: 0;
   width: 100%;
   transition: transform 1.5s cubic-bezier(0.2, 0.8, 0.3, 1);
+  transform: translateY(calc(var(--item-height) * -12));
 }
 
 .item {
@@ -45,8 +47,8 @@ select { padding: 10px; font-size: 18px; width: 100%; }
 }
 
 @keyframes spin {
-  0% { transform: translateY(-600px); }
-  100% { transform: translateY(0); }
+  0% { transform: translateY(calc(var(--item-height) * -12)); }
+  100% { transform: translateY(calc(var(--item-height) * -6)); }
 }
 
 .spinning .reel {
@@ -56,12 +58,8 @@ select { padding: 10px; font-size: 18px; width: 100%; }
 
 @media (max-width: 400px) {
   h1 { font-size: 22px; }
-  .slot { width: 80px; height: 80px; font-size: 36px; }
+  .slot { width: 80px; height: 80px; font-size: 36px; --item-height: 80px; }
   .item { height: 80px; }
-  @keyframes spin {
-    0% { transform: translateY(-480px); }
-    100% { transform: translateY(-960px); }
-  }
 }
 .bg-1 { background-color: #FFFFFF; color: #000000; }
 .bg-2 { background-color: #000000; color: #FFFFFF; }

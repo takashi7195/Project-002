@@ -136,7 +136,6 @@ startBtn.addEventListener('click', async () => {
             reel.appendChild(item);
         }
     }
-    reel.style.transform = 'translateY(-600px)'; // 初期位置を中央セットに
     slot.classList.add('spinning');
   });
 
@@ -167,7 +166,7 @@ async function stopRoulette(slot, finalBoat, delay) {
 
       // 2. 目標位置を計算 (現在の位置より「先」にある目的数字)
       const itemHeight = slot.querySelector('.item').offsetHeight;
-      let targetY = -(finalBoat - 1) * itemHeight;
+      let targetY = -(finalBoat - 1 + 6) * itemHeight; // 探索の基準をセット2の範囲に設定
 
       // 上→下へ回転しているのでtargetYはcurrentYより大きい値にする
       while (targetY <= currentY) {
@@ -179,14 +178,18 @@ async function stopRoulette(slot, finalBoat, delay) {
       }
 
       // 3. アニメーション実行 (transitionで自然に減速して停止)
+      const distance = Math.abs(targetY - currentY);
+      const speed = 600; // px/s (animation 600px / 1s)
+      const duration = Math.max(distance / speed, 0.5); // 最低0.5秒はかける
+
       requestAnimationFrame(() => {
-        reel.style.transition = 'transform 1.5s cubic-bezier(0.2, 0.8, 0.3, 1)';
+        reel.style.transition = `transform ${duration}s cubic-bezier(0.2, 0.8, 0.3, 1)`;
         reel.style.transform = `translateY(${targetY}px)`;
         // 停止後に確定したクラスを付与
         slot.className = `slot bg-${finalBoat}`;
       });
 
-      setTimeout(resolve, 1500); // transition完了まで待つ
+      setTimeout(resolve, duration * 1000); // transition完了まで待つ
     }, delay);
   });
 }
