@@ -6,7 +6,7 @@ body {
   justify-content: center;
   align-items: flex-start;
   padding-top: 10vh;
-  background-image: url('Copilot_20260821_224628.png');
+  background-image: url('boat_002.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -57,9 +57,13 @@ select { padding: 10px; font-size: 18px; width: 100%; }
 }
 
 @media (max-width: 400px) {
-  h1 { font-size: 22px; }
-  .slot { width: 80px; height: 80px; font-size: 36px; --item-height: 80px; }
-  .item { height: 80px; }
+  body { padding-top: 4vh; }
+  .container { padding: 14px; }
+  h1 { font-size: 20px; }
+  select { padding: 8px; font-size: 16px; width: 46%; }
+  .slot { width: 72px; height: 72px; font-size: 32px; --item-height: 72px; }
+  .item { height: 72px; }
+  button { padding: 12px 20px; font-size: 18px; width: 92%; display: block; margin: 0 auto; }
 }
 .bg-1 { background-color: #FFFFFF; color: #000000; }
 .bg-2 { background-color: #000000; color: #FFFFFF; }
